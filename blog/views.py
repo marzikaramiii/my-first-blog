@@ -35,6 +35,12 @@ def post_edit(request,pk):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+            # Clear existing tags for the post
+            post.tags.clear()
+
+            # Get selected tags from the form and add them to the post
+            tags = form.cleaned_data['tags']
+            post.tags.add(*tags)
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
@@ -84,7 +90,7 @@ def comment_remove(request,pk):
 
 def list_posts_by_tag(request,tag_id):
     tag = get_object_or_404(Tag,id = tag_id)
-    posts = Post.objects.filter(tags= tag)
+    posts = Post.objects.filter(publish_date__lte=timezone.now(),tags= tag)
     context = {
         "tag_name": tag.title,
         "posts": posts
