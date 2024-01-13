@@ -21,6 +21,7 @@ def post_new(request):
         if form.is_valid():
             post=form.save(commit=False)
             post.author=request.user
+            tags = form.cleaned_data['tags']
             post.save()
             return redirect('post_detail',pk=post.pk)
     else:
