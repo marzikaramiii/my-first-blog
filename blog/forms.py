@@ -8,7 +8,8 @@ class PostForm(forms.ModelForm):
         fields =('title','text','tags')
 
         tags = forms.ModelMultipleChoiceField(
-            queryset=Tag.objects.all()
+            queryset=Tag.objects.all(),
+            widget = forms.CheckboxSelectMultiple
         )
 
 class CommentForm(forms.ModelForm):

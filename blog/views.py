@@ -82,5 +82,11 @@ def comment_remove(request,pk):
     return redirect('post_detail',pk=comment.post.pk)
 
 
-
-    
+def list_posts_by_tag(request,tag_id):
+    tag = get_object_or_404(Tag,id = tag_id)
+    posts = Post.objects.filter(tags= tag)
+    context = {
+        "tag_name": tag.title,
+        "posts": posts
+    }
+    return render(request,'blog/post_list.html',context)
